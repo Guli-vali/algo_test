@@ -1,19 +1,18 @@
 import re
 
-from bs4 import BeautifulSoup
 import requests
+from bs4 import BeautifulSoup
 
 import json
 
 
 INN = input('Введите ИНН: ')
-
 BASE_URL = 'https://kad.arbitr.ru'
 URL = BASE_URL + '/Kad/SearchInstances'
 
 
 def get_info(base_url, request_url, inn_data):
-    'get data from server'
+    'Get data from arbitr service'
 
     # get new cookie to emulate new user(avoiding api throttling)
     cookie_rsp = requests.request("POST", base_url).cookies
@@ -66,6 +65,7 @@ def get_info(base_url, request_url, inn_data):
     response = requests.request("POST", url, headers=headers, data=payload)
 
     return response.text
+
 info = get_info(BASE_URL, URL, INN)
 soup = BeautifulSoup(info, 'html.parser')
 
