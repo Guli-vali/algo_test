@@ -7,11 +7,12 @@ import json
 
 
 INN = input('Введите ИНН: ')
+WASM_TOKEN = input('Введите ваш wasm токен: ')
 
 BASE_URL = 'https://kad.arbitr.ru'
 URL = BASE_URL + '/Kad/SearchInstances'
 
-def get_info(base_url, request_url, inn_data, page):
+def get_info(base_url, request_url, inn_data, wasm_token, page):
     'get data from server'
 
     # get new cookie to emulate new user(avoiding api throttling)
@@ -22,7 +23,7 @@ def get_info(base_url, request_url, inn_data, page):
         NET_SessionId=cookie_rsp.get('ASP.NET_SessionId'),
         CUID=cookie_rsp.get('CUID'),
         Notification_All=cookie_rsp.get('Notification_All'),
-        wasm='e448faae41c56172efa31362f6c314b9',
+        wasm=wasm_token,
     )
     url = request_url
 
@@ -82,10 +83,11 @@ def parse_page(info):
 i = 1
 final_flag = False
 
-while not final:
-    info = get_info(BASE_URL, URL, INN, i)
+while not final_flag:
+    info = get_info(BASE_URL, URL, INN, WASM_TOKEN, i)
     parse_page(info)
 
     if not info.text:
         final_flag = True
+
     i += 1
