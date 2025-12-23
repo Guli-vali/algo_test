@@ -1,0 +1,230 @@
+{
+  "questions": [
+    {
+      "id": 1,
+      "type": "theory",
+      "topic": "Основы async/await",
+      "title": "Что такое event loop?",
+      "question": "Что такое event loop? Как он работает?",
+      "answer": "Event loop (цикл событий) — это механизм, который управляет выполнением асинхронного кода в Python.\n\nКак работает:\n1. Event loop запускается и начинает обрабатывать задачи\n2. Когда встречается await, выполнение приостанавливается, и event loop переключается на другую задачу\n3. Когда I/O операция завершается, event loop возобновляет выполнение соответствующей корутины\n4. Это позволяет эффективно обрабатывать множество I/O операций без блокировки\n\nАналогия: как официант в ресторане — принимает заказы, пока готовится еда, обслуживает других клиентов, а когда еда готова, возвращается к первому клиенту."
+    },
+    {
+      "id": 2,
+      "type": "theory",
+      "topic": "Основы async/await",
+      "title": "Разница между async def и обычной функцией",
+      "question": "В чем разница между `async def` и обычной функцией?",
+      "answer": "1. `async def` создает корутину (coroutine), обычная функция — обычный объект функции\n2. Корутину нужно вызывать с `await`, обычную функцию — напрямую\n3. Корутина может использовать `await` для приостановки выполнения, обычная функция выполняется синхронно\n4. Корутина возвращает coroutine object, который нужно запустить через event loop\n\nПример:\n```python\n# Обычная функция\ndef sync_func():\n    return 42\n\nresult = sync_func()  # Сразу получаем результат\n\n# Async функция\nasync def async_func():\n    return 42\n\nresult = async_func()  # Получаем coroutine object, не результат!\nresult = await async_func()  # Правильно — получаем результат"
+    },
+    {
+      "id": 3,
+      "type": "theory",
+      "topic": "Основы async/await",
+      "title": "Что произойдет без await?",
+      "question": "Что произойдет, если вызвать `async` функцию без `await`?",
+      "answer": "Если вызвать async функцию без await, она вернет coroutine object, но не выполнится.\n\nПример:\n```python\nasync def fetch_data():\n    print('Fetching...')\n    return 'data'\n\n# Без await\nresult = fetch_data()  # Ничего не выведется!\nprint(result)  # <coroutine object fetch_data at 0x...>\n\n# С await (правильно)\nresult = await fetch_data()  # Выведет 'Fetching...'\nprint(result)  # 'data'\n```\n\nВажно: корутина не выполнится, пока не будет вызвана через await или передана в asyncio.run(), asyncio.create_task() и т.д."
+    },
+    {
+      "id": 4,
+      "type": "theory",
+      "topic": "Основы async/await",
+      "title": "asyncio.gather vs последовательный await",
+      "question": "Объясни разницу между:\n```python\nawait asyncio.gather(task1(), task2(), task3())\n```\nи\n```python\nawait task1()\nawait task2()\nawait task3()\n```",
+      "answer": "**asyncio.gather()** — выполняет задачи **параллельно**:\n- Все три задачи запускаются одновременно\n- Event loop переключается между ними\n- Общее время ≈ времени самой медленной задачи\n- Если одна упадет, остальные продолжат выполнение\n\n**Последовательный await** — выполняет задачи **последовательно**:\n- task2() начнется только после завершения task1()\n- task3() начнется только после завершения task2()\n- Общее время = сумма времени всех задач\n\nПример:\n```python\n# Параллельно (быстрее)\nresults = await asyncio.gather(\n    fetch_url('url1'),  # 1 сек\n    fetch_url('url2'),  # 1 сек\n    fetch_url('url3')   # 1 сек\n)\n# Общее время: ~1 секунда\n\n# Последовательно (медленнее)\nr1 = await fetch_url('url1')  # 1 сек\nr2 = await fetch_url('url2')  # 1 сек\nr3 = await fetch_url('url3')  # 1 сек\n# Общее время: 3 секунды"
+    },
+    {
+      "id": 5,
+      "type": "theory",
+      "topic": "Основы async/await",
+      "title": "Корутина vs генератор",
+      "question": "Что такое корутина (coroutine)? Чем она отличается от генератора?",
+      "answer": "**Корутина (coroutine)** — функция, определенная через `async def`, которая может приостанавливать выполнение через `await`.\n\n**Генератор** — функция с `yield`, которая возвращает итератор.\n\n**Отличия:**\n1. Синтаксис: `async def` + `await` vs `def` + `yield`\n2. Назначение: корутины для асинхронного программирования, генераторы для ленивых вычислений\n3. Возвращаемое значение: корутина возвращает coroutine object, генератор — generator object\n4. Корутины управляются event loop, генераторы — вручную через next()\n\n**Сходство:** оба могут приостанавливать выполнение и возобновлять его позже.\n\n```python\n# Генератор\ndef gen():\n    yield 1\n    yield 2\n\n# Корутина\nasync def coro():\n    await asyncio.sleep(1)\n    return 42"
+    },
+    {
+      "id": 6,
+      "type": "theory",
+      "topic": "Blocking vs Non-blocking",
+      "title": "Почему time.sleep() ломает async",
+      "question": "Почему `time.sleep(1)` \"ломает\" async-код? Что использовать вместо?",
+      "answer": "`time.sleep()` блокирует весь поток выполнения, включая event loop. Это означает, что пока выполняется sleep, event loop не может обрабатывать другие задачи.\n\n**Проблема:**\n```python\nasync def bad_example():\n    time.sleep(1)  # Блокирует event loop на 1 секунду!\n    # Все другие корутины ждут\n```\n\n**Решение:** использовать `await asyncio.sleep()`:\n```python\nasync def good_example():\n    await asyncio.sleep(1)  # Отдает управление event loop\n    # Другие корутины могут выполняться\n```\n\n**Правило:** в async-коде всегда используй `asyncio.sleep()` вместо `time.sleep()`."
+    },
+    {
+      "id": 7,
+      "type": "theory",
+      "topic": "Blocking vs Non-blocking",
+      "title": "Какие операции blocking?",
+      "question": "Какие операции в Python являются blocking? Приведи примеры.",
+      "answer": "**Blocking операции** — операции, которые блокируют выполнение потока до завершения:\n\n1. **I/O операции:**\n   - `requests.get()` (синхронные HTTP запросы)\n   - `open().read()` (чтение файлов)\n   - `socket.recv()` (сетевые операции)\n\n2. **CPU-bound операции:**\n   - Математические вычисления\n   - Обработка изображений\n   - Парсинг больших данных\n\n3. **Синхронные библиотеки:**\n   - `time.sleep()`\n   - `sqlite3` (синхронный)\n   - `psycopg2` (синхронный PostgreSQL)\n\n**Решение:** использовать async-версии:\n- `aiohttp` вместо `requests`\n- `aiofiles` для работы с файлами\n- `asyncpg` для PostgreSQL\n- `asyncio.sleep()` вместо `time.sleep()`"
+    },
+    {
+      "id": 8,
+      "type": "theory",
+      "topic": "Blocking vs Non-blocking",
+      "title": "HTTP запросы в async",
+      "question": "Как правильно делать HTTP-запросы в async-коде?",
+      "answer": "Используй асинхронные библиотеки, такие как `aiohttp` или `httpx`:\n\n**С aiohttp:**\n```python\nimport aiohttp\n\nasync def fetch_url(url):\n    async with aiohttp.ClientSession() as session:\n        async with session.get(url) as response:\n            return await response.json()\n```\n\n**С httpx (проще):**\n```python\nimport httpx\n\nasync def fetch_url(url):\n    async with httpx.AsyncClient() as client:\n        response = await client.get(url)\n        return response.json()\n```\n\n**Параллельные запросы:**\n```python\nurls = ['url1', 'url2', 'url3']\nresults = await asyncio.gather(*[fetch_url(url) for url in urls])\n```\n\n**НЕ используй `requests`** — он блокирующий!"
+    },
+    {
+      "id": 9,
+      "type": "theory",
+      "topic": "Blocking vs Non-blocking",
+      "title": "Синхронный код в async",
+      "question": "Что произойдет, если в async-функции вызвать синхронный блокирующий код?",
+      "answer": "Синхронный блокирующий код **заблокирует event loop**, и все другие корутины будут ждать.\n\n**Проблема:**\n```python\nasync def bad_example():\n    # Это заблокирует event loop на 5 секунд!\n    time.sleep(5)\n    # Все другие корутины заморожены\n```\n\n**Решения:**\n\n1. **Использовать async-версию:**\n```python\nawait asyncio.sleep(5)  # Вместо time.sleep(5)\n```\n\n2. **Выполнить в отдельном потоке (для CPU-bound):**\n```python\nimport asyncio\nfrom concurrent.futures import ThreadPoolExecutor\n\nexecutor = ThreadPoolExecutor()\n\nasync def cpu_bound_task():\n    loop = asyncio.get_event_loop()\n    result = await loop.run_in_executor(executor, heavy_computation)\n    return result\n```\n\n3. **Использовать `asyncio.to_thread()` (Python 3.9+):**\n```python\nresult = await asyncio.to_thread(blocking_function)\n```"
+    },
+    {
+      "id": 10,
+      "type": "theory",
+      "topic": "Async vs Threading vs Multiprocessing",
+      "title": "Когда что использовать?",
+      "question": "Когда использовать `asyncio`, когда `threading`, когда `multiprocessing`?",
+      "answer": "**asyncio** — для I/O-bound операций:\n- HTTP запросы\n- Работа с базами данных\n- Файловые операции\n- Сетевые операции\n- Когда много операций ожидания\n\n**threading** — для I/O-bound, когда:\n- Нужна совместимость со старым кодом\n- Работа с библиотеками, которые не поддерживают async\n- GUI приложения (чтобы не блокировать UI)\n\n**multiprocessing** — для CPU-bound операций:\n- Математические вычисления\n- Обработка изображений/видео\n- Парсинг больших данных\n- Когда нужно обойти GIL\n\n**Правило:**\n- I/O-bound → asyncio (лучше) или threading\n- CPU-bound → multiprocessing"
+    },
+    {
+      "id": 11,
+      "type": "theory",
+      "topic": "Async vs Threading vs Multiprocessing",
+      "title": "Async быстрее threading для I/O?",
+      "question": "Может ли async-код работать быстрее, чем threading для I/O-операций? Почему?",
+      "answer": "Да, async обычно быстрее для I/O-операций по нескольким причинам:\n\n1. **Меньше overhead:** корутины легче потоков (меньше памяти, быстрее переключение)\n2. **Нет GIL проблем:** async не блокируется GIL, threading — да\n3. **Эффективное переключение:** event loop переключается быстрее, чем ОС переключает потоки\n4. **Масштабируемость:** можно запустить тысячи корутин, но не тысячи потоков\n\n**Пример:**\n- 1000 HTTP запросов с threading: ~10-20 секунд (ограничения потоков)\n- 1000 HTTP запросов с asyncio: ~1-2 секунды (эффективное переключение)\n\n**НО:** для CPU-bound задач async не поможет, нужен multiprocessing."
+    },
+    {
+      "id": 12,
+      "type": "theory",
+      "topic": "Async vs Threading vs Multiprocessing",
+      "title": "Когда async не нужен",
+      "question": "Когда async **не нужен**? Приведи примеры.",
+      "answer": "Async **не нужен** в следующих случаях:\n\n1. **CPU-bound задачи:**\n   - Математические вычисления\n   - Обработка изображений\n   - Парсинг данных\n   → Используй multiprocessing\n\n2. **Простой синхронный код:**\n   - Если у тебя 1-2 запроса, async не даст преимущества\n   - Overhead настройки event loop может быть больше выгоды\n\n3. **Библиотеки не поддерживают async:**\n   - Если все библиотеки синхронные, проще использовать threading\n\n4. **Простое приложение:**\n   - Если нет параллельных I/O операций, async избыточен\n\n**Правило:** async имеет смысл, когда есть **много параллельных I/O операций**."
+    },
+    {
+      "id": 13,
+      "type": "theory",
+      "topic": "Async vs Threading vs Multiprocessing",
+      "title": "Threading внутри async",
+      "question": "Можно ли использовать `threading` внутри async-кода? Когда это имеет смысл?",
+      "answer": "Да, можно, и это имеет смысл в следующих случаях:\n\n1. **Работа с блокирующими библиотеками:**\n```python\nimport asyncio\nfrom concurrent.futures import ThreadPoolExecutor\n\nexecutor = ThreadPoolExecutor()\n\nasync def use_blocking_library():\n    loop = asyncio.get_event_loop()\n    # Запускаем блокирующий код в отдельном потоке\n    result = await loop.run_in_executor(\n        executor,\n        blocking_function  # Синхронная функция\n    )\n    return result\n```\n\n2. **CPU-bound задачи в async контексте:**\n```python\n# Если нужно выполнить тяжелое вычисление\nresult = await loop.run_in_executor(executor, cpu_intensive_task)\n```\n\n**Важно:** не создавай потоки напрямую в async-коде, используй `run_in_executor()` или `asyncio.to_thread()`."
+    },
+    {
+      "id": 14,
+      "type": "theory",
+      "topic": "Async vs Threading vs Multiprocessing",
+      "title": "Что такое GIL?",
+      "question": "Что такое GIL? Как он влияет на threading и multiprocessing?",
+      "answer": "**GIL (Global Interpreter Lock)** — механизм в CPython, который позволяет выполнять только один поток Python-кода в один момент времени.\n\n**Влияние на threading:**\n- Потоки не могут выполняться параллельно для CPU-bound задач\n- Для I/O операций GIL освобождается, поэтому threading работает для I/O\n- Это ограничивает производительность CPU-bound задач в threading\n\n**Влияние на multiprocessing:**\n- Каждый процесс имеет свой GIL\n- Процессы могут выполняться параллельно на разных ядрах CPU\n- Поэтому multiprocessing эффективен для CPU-bound задач\n\n**Влияние на asyncio:**\n- Async работает в одном потоке, GIL не мешает\n- Переключение между корутинами происходит быстро\n- Эффективно для I/O-bound задач\n\n**Вывод:**\n- I/O-bound → asyncio (лучше) или threading\n- CPU-bound → multiprocessing (обходит GIL)"
+    },
+    {
+      "id": 15,
+      "type": "practice",
+      "topic": "Практические паттерны",
+      "title": "Rate limiting с Semaphore",
+      "question": "Как ограничить количество одновременных запросов? (rate limiting в async)",
+      "answer": "Используй `asyncio.Semaphore`:\n\n```python\nimport asyncio\n\nasync def fetch_with_limit(url, semaphore):\n    async with semaphore:  # Ограничивает количество одновременных запросов\n        async with aiohttp.ClientSession() as session:\n            async with session.get(url) as response:\n                return await response.json()\n\nasync def main():\n    urls = [f'https://api.example.com/data{i}' for i in range(100)]\n    semaphore = asyncio.Semaphore(5)  # Максимум 5 одновременных запросов\n    \n    tasks = [fetch_with_limit(url, semaphore) for url in urls]\n    results = await asyncio.gather(*tasks)\n    return results\n```\n\n**Как работает:**\n- Semaphore(5) позволяет максимум 5 корутинам войти в блок `async with semaphore`\n- Остальные ждут, пока одна из 5 не завершится\n- Это предотвращает перегрузку сервера или исчерпание соединений"
+    },
+    {
+      "id": 16,
+      "type": "practice",
+      "topic": "Практические паттерны",
+      "title": "Обработка ошибок в gather",
+      "question": "Как обработать ошибки в `asyncio.gather`?",
+      "answer": "Есть несколько способов:\n\n**1. Использовать `return_exceptions=True`:**\n```python\nresults = await asyncio.gather(\n    task1(),\n    task2(),\n    task3(),\n    return_exceptions=True  # Возвращает исключения как результаты\n)\n\nfor i, result in enumerate(results):\n    if isinstance(result, Exception):\n        print(f'Task {i} failed: {result}')\n    else:\n        print(f'Task {i} succeeded: {result}')\n```\n\n**2. Обработать каждую задачу отдельно:**\n```python\nasync def safe_task(task_func):\n    try:\n        return await task_func()\n    except Exception as e:\n        print(f'Error: {e}')\n        return None\n\nresults = await asyncio.gather(*[safe_task(t) for t in tasks])\n```\n\n**3. Использовать `asyncio.as_completed()` для обработки по мере завершения:**\n```python\nfor coro in asyncio.as_completed(tasks):\n    try:\n        result = await coro\n    except Exception as e:\n        print(f'Error: {e}')\n```"
+    },
+    {
+      "id": 17,
+      "type": "practice",
+      "topic": "Практические паттерны",
+      "title": "asyncio.create_task()",
+      "question": "Что такое `asyncio.create_task()`? Когда его использовать?",
+      "answer": "`asyncio.create_task()` оборачивает корутину в Task и планирует её выполнение в event loop.\n\n**Когда использовать:**\n1. Когда нужно запустить корутину \"в фоне\" и не ждать её завершения сразу\n2. Когда нужно запустить несколько корутин параллельно\n\n**Пример:**\n```python\nasync def background_task():\n    await asyncio.sleep(5)\n    print('Background task completed')\n\nasync def main():\n    # Запускаем задачу в фоне\n    task = asyncio.create_task(background_task())\n    \n    # Делаем другую работу\n    print('Doing other work...')\n    await asyncio.sleep(2)\n    \n    # Ждем завершения фоновой задачи\n    await task\n    print('All done')\n```\n\n**Разница с await:**\n- `await coro()` — ждет завершения\n- `asyncio.create_task(coro())` — запускает и продолжает выполнение\n\n**Важно:** если не await task, она может не успеть выполниться до завершения программы."
+    },
+    {
+      "id": 18,
+      "type": "practice",
+      "topic": "Практические паттерны",
+      "title": "Async context manager",
+      "question": "Как правильно закрывать ресурсы в async-коде? (context managers)",
+      "answer": "Используй async context managers через `async with`:\n\n**Пример с базой данных:**\n```python\nclass AsyncDBConnection:\n    async def __aenter__(self):\n        self.conn = await connect_to_db()\n        return self.conn\n    \n    async def __aexit__(self, exc_type, exc_val, exc_tb):\n        await self.conn.close()\n\n# Использование:\nasync def main():\n    async with AsyncDBConnection() as db:\n        result = await db.query('SELECT * FROM users')\n    # Соединение автоматически закроется\n```\n\n**Пример с файлами (aiofiles):**\n```python\nimport aiofiles\n\nasync def read_file():\n    async with aiofiles.open('file.txt', 'r') as f:\n        content = await f.read()\n    # Файл автоматически закроется\n```\n\n**Важно:** всегда используй `async with` для ресурсов, которые нужно закрывать (соединения, файлы, сессии)."
+    },
+    {
+      "id": 19,
+      "type": "practice",
+      "topic": "Практические паттерны",
+      "title": "asyncio.Semaphore",
+      "question": "Что такое `asyncio.Semaphore`? Для чего он нужен?",
+      "answer": "`asyncio.Semaphore` — это примитив синхронизации, который ограничивает количество одновременных операций.\n\n**Зачем нужен:**\n- Ограничение количества одновременных запросов (rate limiting)\n- Защита от перегрузки ресурсов\n- Контроль использования соединений\n\n**Как работает:**\n```python\nsemaphore = asyncio.Semaphore(3)  # Максимум 3 одновременных операции\n\nasync def limited_operation():\n    async with semaphore:  # Занимает слот\n        # Выполняем операцию\n        await do_something()\n    # Слот освобождается автоматически\n```\n\n**Пример использования:**\n```python\nasync def fetch_url(url, semaphore):\n    async with semaphore:\n        async with aiohttp.ClientSession() as session:\n            async with session.get(url) as response:\n                return await response.json()\n\n# Максимум 5 запросов одновременно\nsemaphore = asyncio.Semaphore(5)\ntasks = [fetch_url(url, semaphore) for url in urls]\nresults = await asyncio.gather(*tasks)\n```"
+    },
+    {
+      "id": 20,
+      "type": "exercise",
+      "topic": "Базовый async/await",
+      "title": "Параллельные HTTP запросы",
+      "question": "Напиши функцию, которая делает 3 HTTP-запроса параллельно и возвращает результаты.\n\nИспользуй `aiohttp` или `httpx`.\n\nПример использования:\n```python\nresults = await fetch_urls([\n    'https://api.example.com/data1',\n    'https://api.example.com/data2',\n    'https://api.example.com/data3'\n])\n```",
+      "answer": "**Решение с httpx (проще):**\n```python\nimport httpx\nimport asyncio\n\nasync def fetch_urls(urls):\n    async with httpx.AsyncClient() as client:\n        tasks = [client.get(url) for url in urls]\n        responses = await asyncio.gather(*tasks)\n        return [resp.json() for resp in responses]\n\n# Использование:\nasync def main():\n    urls = [\n        'https://api.example.com/data1',\n        'https://api.example.com/data2',\n        'https://api.example.com/data3'\n    ]\n    results = await fetch_urls(urls)\n    print(results)\n\nasyncio.run(main())\n```\n\n**Решение с aiohttp:**\n```python\nimport aiohttp\nimport asyncio\n\nasync def fetch_urls(urls):\n    async with aiohttp.ClientSession() as session:\n        tasks = [session.get(url) for url in urls]\n        responses = await asyncio.gather(*tasks)\n        results = []\n        for resp in responses:\n            results.append(await resp.json())\n            resp.close()\n        return results\n```\n\n**Ключевые моменты:**\n- Используем `asyncio.gather()` для параллельного выполнения\n- Закрываем сессию через `async with`\n- Все запросы выполняются одновременно, не последовательно"
+    },
+    {
+      "id": 21,
+      "type": "exercise",
+      "topic": "Blocking vs Non-blocking",
+      "title": "Исправь блокирующий код",
+      "question": "Этот код блокирует event loop. Исправь его:\n\n```python\nimport asyncio\nimport time\n\nasync def process_items(items):\n    results = []\n    for item in items:\n        # Эта операция блокирует event loop\n        time.sleep(0.1)  # Имитация тяжелой операции\n        results.append(item * 2)\n    return results\n\nasync def main():\n    items = list(range(10))\n    results = await process_items(items)\n    print(results)\n\nasyncio.run(main())\n```\n\nВопросы:\n- Что не так с этим кодом?\n- Как правильно исправить?\n- Что если операция действительно CPU-bound?",
+      "answer": "**Проблема:** `time.sleep()` блокирует event loop, все другие корутины заморожены.\n\n**Решение 1: Если это I/O операция (имитация):**\n```python\nimport asyncio\n\nasync def process_items(items):\n    results = []\n    for item in items:\n        await asyncio.sleep(0.1)  # Не блокирует event loop\n        results.append(item * 2)\n    return results\n```\n\n**Решение 2: Если это CPU-bound операция:**\n```python\nimport asyncio\nfrom concurrent.futures import ThreadPoolExecutor\n\nexecutor = ThreadPoolExecutor()\n\ndef cpu_intensive(item):\n    # Тяжелое вычисление\n    time.sleep(0.1)  # Имитация\n    return item * 2\n\nasync def process_items(items):\n    loop = asyncio.get_event_loop()\n    tasks = [loop.run_in_executor(executor, cpu_intensive, item) for item in items]\n    results = await asyncio.gather(*tasks)\n    return results\n```\n\n**Решение 3: С asyncio.to_thread() (Python 3.9+):**\n```python\nasync def process_items(items):\n    tasks = [asyncio.to_thread(cpu_intensive, item) for item in items]\n    results = await asyncio.gather(*tasks)\n    return results\n```\n\n**Вывод:**\n- I/O операции → `await asyncio.sleep()`\n- CPU-bound → `run_in_executor()` или `asyncio.to_thread()`"
+    },
+    {
+      "id": 22,
+      "type": "exercise",
+      "topic": "Rate limiting",
+      "title": "Rate limiting с Semaphore",
+      "question": "Напиши функцию, которая делает запросы к API, но не более 3 одновременно.\n\n```python\nimport asyncio\n\nasync def fetch_with_limit(url, semaphore):\n    # твой код здесь\n    pass\n\nasync def main():\n    urls = [f'https://api.example.com/data{i}' for i in range(10)]\n    semaphore = asyncio.Semaphore(3)\n    \n    tasks = [fetch_with_limit(url, semaphore) for url in urls]\n    results = await asyncio.gather(*tasks)\n    return results\n```",
+      "answer": "**Решение:**\n```python\nimport asyncio\nimport httpx\n\nasync def fetch_with_limit(url, semaphore):\n    async with semaphore:  # Ограничивает количество одновременных запросов\n        async with httpx.AsyncClient() as client:\n            response = await client.get(url)\n            return response.json()\n\nasync def main():\n    urls = [f'https://api.example.com/data{i}' for i in range(10)]\n    semaphore = asyncio.Semaphore(3)  # Максимум 3 одновременно\n    \n    tasks = [fetch_with_limit(url, semaphore) for url in urls]\n    results = await asyncio.gather(*tasks)\n    return results\n\nasyncio.run(main())\n```\n\n**Как работает:**\n1. Создаем Semaphore(3) — максимум 3 слота\n2. `async with semaphore` занимает слот перед запросом\n3. Если все 3 слота заняты, корутина ждет\n4. После завершения запроса слот освобождается\n5. Следующая корутина может начать запрос\n\n**Результат:** максимум 3 запроса выполняются одновременно, остальные ждут."
+    },
+    {
+      "id": 23,
+      "type": "exercise",
+      "topic": "Обработка ошибок",
+      "title": "Обработка ошибок в gather",
+      "question": "Напиши код, который делает несколько запросов, но продолжает работу даже если некоторые падают с ошибкой.\n\nТребования:\n- Если запрос упал, вернуть `None` вместо результата\n- Все успешные запросы должны быть обработаны\n- Использовать `asyncio.gather`",
+      "answer": "**Решение:**\n```python\nimport asyncio\nimport httpx\n\nasync def safe_fetch(url):\n    try:\n        async with httpx.AsyncClient() as client:\n            response = await client.get(url, timeout=5.0)\n            return response.json()\n    except Exception as e:\n        print(f'Error fetching {url}: {e}')\n        return None\n\nasync def main():\n    urls = [\n        'https://api.example.com/data1',\n        'https://api.example.com/data2',\n        'https://invalid-url-that-will-fail',\n        'https://api.example.com/data4'\n    ]\n    \n    results = await asyncio.gather(*[safe_fetch(url) for url in urls])\n    \n    # Фильтруем успешные результаты\n    successful = [r for r in results if r is not None]\n    print(f'Successful: {len(successful)}, Failed: {len(results) - len(successful)}')\n    return results\n\nasyncio.run(main())\n```\n\n**Альтернатива с return_exceptions=True:**\n```python\nasync def fetch_url(url):\n    async with httpx.AsyncClient() as client:\n        response = await client.get(url, timeout=5.0)\n        return response.json()\n\nasync def main():\n    urls = [...]\n    results = await asyncio.gather(\n        *[fetch_url(url) for url in urls],\n        return_exceptions=True\n    )\n    \n    for i, result in enumerate(results):\n        if isinstance(result, Exception):\n            print(f'URL {urls[i]} failed: {result}')\n            results[i] = None\n        else:\n            print(f'URL {urls[i]} succeeded')\n    \n    return results\n```"
+    },
+    {
+      "id": 24,
+      "type": "exercise",
+      "topic": "Timeout",
+      "title": "Timeout для async операций",
+      "question": "Напиши функцию, которая делает запрос с таймаутом 5 секунд. Если запрос не успел, верни `None`.\n\n```python\nasync def fetch_with_timeout(url, timeout=5):\n    # твой код здесь\n    pass\n```\n\nПодсказка: используй `asyncio.wait_for()`.",
+      "answer": "**Решение:**\n```python\nimport asyncio\nimport httpx\n\nasync def fetch_with_timeout(url, timeout=5):\n    try:\n        async with httpx.AsyncClient() as client:\n            response = await asyncio.wait_for(\n                client.get(url),\n                timeout=timeout\n            )\n            return response.json()\n    except asyncio.TimeoutError:\n        print(f'Request to {url} timed out after {timeout}s')\n        return None\n    except Exception as e:\n        print(f'Error fetching {url}: {e}')\n        return None\n\n# Использование:\nasync def main():\n    url = 'https://api.example.com/slow-endpoint'\n    result = await fetch_with_timeout(url, timeout=5)\n    if result is None:\n        print('Request failed or timed out')\n    else:\n        print(f'Success: {result}')\n\nasyncio.run(main())\n```\n\n**Как работает `asyncio.wait_for()`:**\n- Оборачивает корутину в таймаут\n- Если корутина не завершилась за указанное время, выбрасывает `asyncio.TimeoutError`\n- Позволяет отменить долгие операции\n\n**Альтернатива с timeout в httpx:**\n```python\nasync def fetch_with_timeout(url, timeout=5):\n    try:\n        async with httpx.AsyncClient(timeout=timeout) as client:\n            response = await client.get(url)\n            return response.json()\n    except httpx.TimeoutException:\n        return None\n```"
+    },
+    {
+      "id": 25,
+      "type": "exercise",
+      "topic": "Context manager",
+      "title": "Async context manager",
+      "question": "Создай async context manager для подключения к базе данных.\n\n```python\nclass AsyncDBConnection:\n    async def __aenter__(self):\n        # инициализация подключения\n        pass\n    \n    async def __aexit__(self, exc_type, exc_val, exc_tb):\n        # закрытие подключения\n        pass\n\n# Использование:\nasync def main():\n    async with AsyncDBConnection() as db:\n        # работа с БД\n        pass\n```",
+      "answer": "**Решение:**\n```python\nimport asyncio\n\nclass AsyncDBConnection:\n    def __init__(self, connection_string):\n        self.connection_string = connection_string\n        self.conn = None\n    \n    async def __aenter__(self):\n        # Имитация подключения к БД\n        print(f'Connecting to {self.connection_string}...')\n        await asyncio.sleep(0.1)  # Имитация времени подключения\n        self.conn = {'connected': True, 'db': 'example_db'}\n        print('Connected!')\n        return self.conn\n    \n    async def __aexit__(self, exc_type, exc_val, exc_tb):\n        # Закрытие подключения\n        if self.conn:\n            print('Closing connection...')\n            await asyncio.sleep(0.05)  # Имитация времени закрытия\n            self.conn = None\n            print('Connection closed!')\n        # Если вернуть True, исключение будет подавлено\n        return False\n\n# Использование:\nasync def main():\n    async with AsyncDBConnection('postgresql://localhost/db') as db:\n        # Работа с БД\n        print(f'Working with database: {db}')\n        # Если здесь произойдет исключение, __aexit__ все равно вызовется\n\nasyncio.run(main())\n```\n\n**Реальный пример с asyncpg:**\n```python\nimport asyncpg\n\nclass AsyncDBConnection:\n    def __init__(self, dsn):\n        self.dsn = dsn\n        self.conn = None\n    \n    async def __aenter__(self):\n        self.conn = await asyncpg.connect(self.dsn)\n        return self.conn\n    \n    async def __aexit__(self, exc_type, exc_val, exc_tb):\n        if self.conn:\n            await self.conn.close()\n        return False\n\n# Использование:\nasync def main():\n    async with AsyncDBConnection('postgresql://user:pass@localhost/db') as conn:\n        rows = await conn.fetch('SELECT * FROM users')\n        # Соединение автоматически закроется\n```"
+    },
+    {
+      "id": 26,
+      "type": "code_analysis",
+      "topic": "Понимание кода",
+      "title": "Порядок выполнения",
+      "question": "Что выведет этот код? В каком порядке?\n\n```python\nimport asyncio\n\nasync def task(name, delay):\n    print(f\"{name} started\")\n    await asyncio.sleep(delay)\n    print(f\"{name} finished\")\n    return name\n\nasync def main():\n    print(\"Main started\")\n    result = await asyncio.gather(\n        task(\"A\", 2),\n        task(\"B\", 1),\n        task(\"C\", 3)\n    )\n    print(f\"Results: {result}\")\n    print(\"Main finished\")\n\nasyncio.run(main())\n```",
+      "answer": "**Вывод:**\n```\nMain started\nA started\nB started\nC started\nB finished\nA finished\nC finished\nResults: ['A', 'B', 'C']\nMain finished\n```\n\n**Объяснение:**\n1. `Main started` — первое сообщение\n2. Все три задачи (`A`, `B`, `C`) запускаются **параллельно** через `asyncio.gather()`\n3. Все три `started` сообщения выводятся сразу (почти одновременно)\n4. `B finished` — через 1 секунду (самая быстрая)\n5. `A finished` — через 2 секунды\n6. `C finished` — через 3 секунды (самая медленная)\n7. `Results` — после завершения всех задач\n8. `Main finished` — в конце\n\n**Ключевой момент:** задачи выполняются параллельно, поэтому все `started` выводятся сразу, а `finished` — по мере завершения (в порядке времени выполнения, не в порядке создания)."
+    },
+    {
+      "id": 27,
+      "type": "code_analysis",
+      "topic": "Поиск ошибок",
+      "title": "Где ошибка?",
+      "question": "Что не так с этим кодом? Как исправить?\n\n```python\nimport asyncio\nimport requests\n\nasync def fetch_data(url):\n    response = requests.get(url)\n    return response.json()\n\nasync def main():\n    urls = ['https://api.example.com/data1', 'https://api.example.com/data2']\n    results = await asyncio.gather(*[fetch_data(url) for url in urls])\n    return results\n```",
+      "answer": "**Проблема:** `requests.get()` — это **блокирующая** операция, которая блокирует event loop.\n\n**Что происходит:**\n- Когда вызывается `requests.get()`, весь event loop замораживается\n- Другие корутины не могут выполняться\n- Async теряет все преимущества\n\n**Решение 1: Использовать async HTTP библиотеку (httpx):**\n```python\nimport asyncio\nimport httpx\n\nasync def fetch_data(url):\n    async with httpx.AsyncClient() as client:\n        response = await client.get(url)\n        return response.json()\n\nasync def main():\n    urls = ['https://api.example.com/data1', 'https://api.example.com/data2']\n    results = await asyncio.gather(*[fetch_data(url) for url in urls])\n    return results\n```\n\n**Решение 2: Запустить requests в отдельном потоке (не рекомендуется):**\n```python\nimport asyncio\nimport requests\nfrom concurrent.futures import ThreadPoolExecutor\n\nexecutor = ThreadPoolExecutor()\n\nasync def fetch_data(url):\n    loop = asyncio.get_event_loop()\n    response = await loop.run_in_executor(executor, requests.get, url)\n    return response.json()\n```\n\n**Вывод:** всегда используй async-версии библиотек в async-коде!"
+    },
+    {
+      "id": 28,
+      "type": "code_analysis",
+      "topic": "Производительность",
+      "title": "Будет ли быстрее с asyncio?",
+      "question": "Будет ли этот код работать быстрее с `asyncio`?\n\n```python\ndef process_data(data):\n    # CPU-intensive операция\n    result = sum(x**2 for x in range(1000000))\n    return result\n\ndata_list = [list(range(100)) for _ in range(10)]\n```",
+      "answer": "**Нет, не будет быстрее!**\n\n**Почему:**\n- `process_data()` — это **CPU-bound** операция (тяжелые вычисления)\n- `asyncio` эффективен только для **I/O-bound** операций (ожидание сети, диска и т.д.)\n- Для CPU-bound задач `asyncio` не даст преимущества, так как все равно выполняется в одном потоке\n\n**Что использовать вместо:**\n\n**1. multiprocessing (для CPU-bound):**\n```python\nfrom multiprocessing import Pool\n\ndef process_data(data):\n    result = sum(x**2 for x in range(1000000))\n    return result\n\ndata_list = [list(range(100)) for _ in range(10)]\n\nwith Pool() as pool:\n    results = pool.map(process_data, data_list)\n```\n\n**2. Если нужно в async контексте:**\n```python\nimport asyncio\nfrom concurrent.futures import ProcessPoolExecutor\n\ndef process_data(data):\n    result = sum(x**2 for x in range(1000000))\n    return result\n\nasync def main():\n    data_list = [list(range(100)) for _ in range(10)]\n    loop = asyncio.get_event_loop()\n    \n    with ProcessPoolExecutor() as executor:\n        tasks = [loop.run_in_executor(executor, process_data, data) for data in data_list]\n        results = await asyncio.gather(*tasks)\n    return results\n```\n\n**Правило:**\n- I/O-bound → asyncio ✅\n- CPU-bound → multiprocessing ✅\n- CPU-bound в async → ProcessPoolExecutor ✅"
+    }
+  ]
+}
+
+

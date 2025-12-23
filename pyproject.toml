@@ -2,14 +2,13 @@
 name = "algo-test"
 version = "0.1.0"
 description = ""
-authors = ["Elière de Olivière <maslievilya1@gmail.com>"]
+authors = ["Eliere <maslievilya1@gmail.com>"]
 readme = "README.md"
 packages = [{include = "algo_test"}]
 
 [tool.poetry.dependencies]
-python = "^3.8"
-jupyterlab = "^4.0.0"
-kafka-python = "^2.0.2"
+python = "^3.10"
+jupyterlab = "^4.5.1"
 
 
 [build-system]

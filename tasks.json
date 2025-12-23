@@ -1,0 +1,564 @@
+{
+  "tasks": [
+    {
+      "id": 1,
+      "topic": "Один проход по массиву / строке",
+      "title": "Найти максимальный элемент в массиве",
+      "description": "Дан массив целых чисел. Найти максимальный элемент за один проход.\n\nПример:\nВход: [3, 7, 2, 9, 1]\nВыход: 9",
+      "difficulty": "Easy",
+      "solution": "def find_max(arr):\n    if not arr:\n        return None\n    max_val = arr[0]\n    for num in arr[1:]:\n        if num > max_val:\n            max_val = num\n    return max_val\n\n# Сложность: O(n) по времени, O(1) по памяти"
+    },
+    {
+      "id": 2,
+      "topic": "Один проход по массиву / строке",
+      "title": "Подсчитать количество четных чисел",
+      "description": "Дан массив целых чисел. Подсчитать количество четных чисел за один проход.\n\nПример:\nВход: [1, 2, 3, 4, 5, 6]\nВыход: 3",
+      "difficulty": "Easy",
+      "solution": "def count_even(arr):\n    count = 0\n    for num in arr:\n        if num % 2 == 0:\n            count += 1\n    return count\n\n# Сложность: O(n) по времени, O(1) по памяти"
+    },
+    {
+      "id": 3,
+      "topic": "Один проход по массиву / строке",
+      "title": "Найти сумму элементов массива",
+      "description": "Дан массив целых чисел. Найти сумму всех элементов за один проход.\n\nПример:\nВход: [1, 2, 3, 4, 5]\nВыход: 15",
+      "difficulty": "Easy",
+      "solution": "def sum_array(arr):\n    total = 0\n    for num in arr:\n        total += num\n    return total\n\n# Или просто: return sum(arr)\n# Сложность: O(n) по времени, O(1) по памяти"
+    },
+    {
+      "id": 4,
+      "topic": "Один проход по массиву / строке",
+      "title": "Проверить, есть ли дубликаты",
+      "description": "Дан массив целых чисел. Проверить, есть ли в массиве дубликаты за один проход.\n\nПример:\nВход: [1, 2, 3, 2, 4]\nВыход: True\n\nВход: [1, 2, 3, 4, 5]\nВыход: False",
+      "difficulty": "Easy",
+      "solution": "def has_duplicates(arr):\n    seen = set()\n    for num in arr:\n        if num in seen:\n            return True\n        seen.add(num)\n    return False\n\n# Сложность: O(n) по времени, O(n) по памяти"
+    },
+    {
+      "id": 5,
+      "topic": "Один проход по массиву / строке",
+      "title": "Найти второй по величине элемент",
+      "description": "Дан массив целых чисел. Найти второй по величине элемент за один проход.\n\nПример:\nВход: [3, 7, 2, 9, 1]\nВыход: 7",
+      "difficulty": "Medium",
+      "solution": "def find_second_max(arr):\n    if len(arr) < 2:\n        return None\n    \n    max_val = second_max = float('-inf')\n    for num in arr:\n        if num > max_val:\n            second_max = max_val\n            max_val = num\n        elif num > second_max and num != max_val:\n            second_max = num\n    \n    return second_max if second_max != float('-inf') else None\n\n# Сложность: O(n) по времени, O(1) по памяти"
+    },
+    {
+      "id": 6,
+      "topic": "Один проход по массиву / строке",
+      "title": "Подсчитать частоту символов в строке",
+      "description": "Дан строка. Подсчитать частоту каждого символа за один проход.\n\nПример:\nВход: \"hello\"\nВыход: {'h': 1, 'e': 1, 'l': 2, 'o': 1}",
+      "difficulty": "Easy",
+      "solution": "def count_chars(s):\n    freq = {}\n    for char in s:\n        freq[char] = freq.get(char, 0) + 1\n    return freq\n\n# Или с Counter:\n# from collections import Counter\n# return dict(Counter(s))\n# Сложность: O(n) по времени, O(k) по памяти, где k - уникальные символы"
+    },
+    {
+      "id": 7,
+      "topic": "Один проход по массиву / строке",
+      "title": "Найти первый неповторяющийся символ",
+      "description": "Дан строка. Найти первый символ, который встречается только один раз.\n\nПример:\nВход: \"abacabad\"\nВыход: 'c'\n\nВход: \"aabb\"\nВыход: None",
+      "difficulty": "Medium",
+      "solution": "def first_unique_char(s):\n    freq = {}\n    for char in s:\n        freq[char] = freq.get(char, 0) + 1\n    \n    for char in s:\n        if freq[char] == 1:\n            return char\n    return None\n\n# Сложность: O(n) по времени, O(k) по памяти"
+    },
+    {
+      "id": 8,
+      "topic": "Один проход по массиву / строке",
+      "title": "Проверить, является ли строка палиндромом",
+      "description": "Проверить, является ли строка палиндромом (читается одинаково слева направо и справа налево). Игнорировать регистр и пробелы.\n\nПример:\nВход: \"A man a plan a canal Panama\"\nВыход: True\n\nВход: \"hello\"\nВыход: False",
+      "difficulty": "Easy",
+      "solution": "def is_palindrome(s):\n    cleaned = ''.join(c.lower() for c in s if c.isalnum())\n    return cleaned == cleaned[::-1]\n\n# Или с two pointers:\n# left, right = 0, len(cleaned) - 1\n# while left < right:\n#     if cleaned[left] != cleaned[right]:\n#         return False\n#     left += 1\n#     right -= 1\n# return True\n# Сложность: O(n) по времени, O(n) по памяти"
+    },
+    {
+      "id": 9,
+      "topic": "Один проход по массиву / строке",
+      "title": "Найти все числа, кратные 3 или 5",
+      "description": "Дан массив целых чисел. Вернуть массив всех чисел, кратных 3 или 5, за один проход.\n\nПример:\nВход: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]\nВыход: [3, 5, 6, 9, 10]",
+      "difficulty": "Easy",
+      "solution": "def multiples_of_3_or_5(arr):\n    result = []\n    for num in arr:\n        if num % 3 == 0 or num % 5 == 0:\n            result.append(num)\n    return result\n\n# Или с list comprehension:\n# return [num for num in arr if num % 3 == 0 or num % 5 == 0]\n# Сложность: O(n) по времени, O(n) по памяти"
+    },
+    {
+      "id": 10,
+      "topic": "Один проход по массиву / строке",
+      "title": "Найти индексы всех вхождений элемента",
+      "description": "Дан массив и элемент. Найти индексы всех вхождений этого элемента за один проход.\n\nПример:\nВход: [1, 2, 3, 2, 4, 2], элемент = 2\nВыход: [1, 3, 5]",
+      "difficulty": "Easy",
+      "solution": "def find_all_indices(arr, target):\n    indices = []\n    for i, num in enumerate(arr):\n        if num == target:\n            indices.append(i)\n    return indices\n\n# Или с list comprehension:\n# return [i for i, num in enumerate(arr) if num == target]\n# Сложность: O(n) по времени, O(k) по памяти, где k - количество вхождений"
+    },
+    {
+      "id": 11,
+      "topic": "Работа с dict / set",
+      "title": "Найти два числа с заданной суммой",
+      "description": "Дан массив целых чисел и целевая сумма. Найти два числа, сумма которых равна целевой сумме. Вернуть индексы.\n\nПример:\nВход: [2, 7, 11, 15], сумма = 9\nВыход: [0, 1] (так как 2 + 7 = 9)",
+      "difficulty": "Easy",
+      "solution": "def two_sum(nums, target):\n    seen = {}\n    for i, num in enumerate(nums):\n        complement = target - num\n        if complement in seen:\n            return [seen[complement], i]\n        seen[num] = i\n    return []\n\n# Сложность: O(n) по времени, O(n) по памяти"
+    },
+    {
+      "id": 12,
+      "topic": "Работа с dict / set",
+      "title": "Найти пересечение двух массивов",
+      "description": "Даны два массива. Найти все элементы, которые присутствуют в обоих массивах.\n\nПример:\nВход: [1, 2, 2, 1], [2, 2]\nВыход: [2, 2]",
+      "difficulty": "Easy",
+      "solution": "def intersect(nums1, nums2):\n    from collections import Counter\n    count1 = Counter(nums1)\n    result = []\n    for num in nums2:\n        if count1[num] > 0:\n            result.append(num)\n            count1[num] -= 1\n    return result\n\n# Сложность: O(n + m) по времени, O(min(n, m)) по памяти"
+    },
+    {
+      "id": 13,
+      "topic": "Работа с dict / set",
+      "title": "Проверить, является ли строка анаграммой",
+      "description": "Даны две строки. Проверить, являются ли они анаграммами (содержат одинаковые символы в разном порядке).\n\nПример:\nВход: \"listen\", \"silent\"\nВыход: True\n\nВход: \"hello\", \"world\"\nВыход: False",
+      "difficulty": "Easy",
+      "solution": "def is_anagram(s1, s2):\n    if len(s1) != len(s2):\n        return False\n    \n    from collections import Counter\n    return Counter(s1) == Counter(s2)\n\n# Или без Counter:\n# return sorted(s1) == sorted(s2)\n# Сложность: O(n) по времени, O(n) по памяти"
+    },
+    {
+      "id": 14,
+      "topic": "Работа с dict / set",
+      "title": "Группировать слова по длине",
+      "description": "Дан список слов. Сгруппировать их по длине.\n\nПример:\nВход: [\"cat\", \"dog\", \"bird\", \"elephant\"]\nВыход: {3: ['cat', 'dog'], 4: ['bird'], 8: ['elephant']}",
+      "difficulty": "Easy",
+      "solution": "def group_by_length(words):\n    groups = {}\n    for word in words:\n        length = len(word)\n        if length not in groups:\n            groups[length] = []\n        groups[length].append(word)\n    return groups\n\n# Или с defaultdict:\n# from collections import defaultdict\n# groups = defaultdict(list)\n# for word in words:\n#     groups[len(word)].append(word)\n# return dict(groups)\n# Сложность: O(n) по времени, O(n) по памяти"
+    },
+    {
+      "id": 15,
+      "topic": "Работа с dict / set",
+      "title": "Найти наиболее часто встречающийся элемент",
+      "description": "Дан массив. Найти элемент, который встречается чаще всего. Если несколько элементов встречаются одинаково часто, вернуть любой.\n\nПример:\nВход: [1, 2, 2, 3, 3, 3, 4]\nВыход: 3",
+      "difficulty": "Easy",
+      "solution": "def most_frequent(arr):\n    from collections import Counter\n    counter = Counter(arr)\n    return counter.most_common(1)[0][0]\n\n# Или вручную:\n# freq = {}\n# max_count = 0\n# result = None\n# for num in arr:\n#     freq[num] = freq.get(num, 0) + 1\n#     if freq[num] > max_count:\n#         max_count = freq[num]\n#         result = num\n# return result\n# Сложность: O(n) по времени, O(n) по памяти"
+    },
+    {
+      "id": 16,
+      "topic": "Работа с dict / set",
+      "title": "Удалить дубликаты, сохранив порядок",
+      "description": "Дан массив. Удалить дубликаты, сохранив порядок первого вхождения каждого элемента.\n\nПример:\nВход: [1, 2, 2, 3, 1, 4, 2]\nВыход: [1, 2, 3, 4]",
+      "difficulty": "Easy",
+      "solution": "def remove_duplicates(arr):\n    seen = set()\n    result = []\n    for num in arr:\n        if num not in seen:\n            seen.add(num)\n            result.append(num)\n    return result\n\n# Или с dict.fromkeys (Python 3.7+ сохраняет порядок):\n# return list(dict.fromkeys(arr))\n# Сложность: O(n) по времени, O(n) по памяти"
+    },
+    {
+      "id": 17,
+      "topic": "Работа с dict / set",
+      "title": "Проверить, содержит ли массив дубликаты",
+      "description": "Дан массив целых чисел. Проверить, содержит ли он дубликаты.\n\nПример:\nВход: [1, 2, 3, 1]\nВыход: True\n\nВход: [1, 2, 3, 4]\nВыход: False",
+      "difficulty": "Easy",
+      "solution": "def contains_duplicate(nums):\n    return len(nums) != len(set(nums))\n\n# Или:\n# seen = set()\n# for num in nums:\n#     if num in seen:\n#         return True\n#     seen.add(num)\n# return False\n# Сложность: O(n) по времени, O(n) по памяти"
+    },
+    {
+      "id": 18,
+      "topic": "Работа с dict / set",
+      "title": "Найти все уникальные элементы",
+      "description": "Дан массив. Найти все элементы, которые встречаются ровно один раз.\n\nПример:\nВход: [1, 2, 2, 3, 4, 4, 5]\nВыход: [1, 3, 5]",
+      "difficulty": "Easy",
+      "solution": "def find_unique(arr):\n    from collections import Counter\n    counter = Counter(arr)\n    return [num for num, count in counter.items() if count == 1]\n\n# Сложность: O(n) по времени, O(n) по памяти"
+    },
+    {
+      "id": 19,
+      "topic": "Работа с dict / set",
+      "title": "Проверить, является ли массив подмножеством другого",
+      "description": "Даны два массива. Проверить, является ли первый массив подмножеством второго (все элементы первого присутствуют во втором).\n\nПример:\nВход: [1, 2, 3], [1, 2, 3, 4, 5]\nВыход: True\n\nВход: [1, 2, 6], [1, 2, 3, 4, 5]\nВыход: False",
+      "difficulty": "Easy",
+      "solution": "def is_subset(arr1, arr2):\n    set2 = set(arr2)\n    return all(num in set2 for num in arr1)\n\n# Или:\n# return set(arr1).issubset(set(arr2))\n# Сложность: O(n + m) по времени, O(m) по памяти"
+    },
+    {
+      "id": 20,
+      "topic": "Работа с dict / set",
+      "title": "Найти симметричную разность двух массивов",
+      "description": "Даны два массива. Найти элементы, которые есть только в одном из массивов (симметричная разность).\n\nПример:\nВход: [1, 2, 3], [2, 3, 4]\nВыход: [1, 4]",
+      "difficulty": "Easy",
+      "solution": "def symmetric_difference(arr1, arr2):\n    set1 = set(arr1)\n    set2 = set(arr2)\n    return list(set1.symmetric_difference(set2))\n\n# Или:\n# return list((set1 - set2) | (set2 - set1))\n# Сложность: O(n + m) по времени, O(n + m) по памяти"
+    },
+    {
+      "id": 21,
+      "topic": "Sliding window",
+      "title": "Максимальная сумма подмассива фиксированной длины",
+      "description": "Дан массив целых чисел и число k. Найти максимальную сумму подмассива длины k.\n\nПример:\nВход: [1, 4, 2, 10, 23, 3, 1, 0, 20], k = 4\nВыход: 39 (сумма [4, 2, 10, 23])",
+      "difficulty": "Easy",
+      "solution": "def max_sum_subarray(arr, k):\n    if len(arr) < k:\n        return None\n    \n    window_sum = sum(arr[:k])\n    max_sum = window_sum\n    \n    for i in range(k, len(arr)):\n        window_sum = window_sum - arr[i - k] + arr[i]\n        max_sum = max(max_sum, window_sum)\n    \n    return max_sum\n\n# Сложность: O(n) по времени, O(1) по памяти"
+    },
+    {
+      "id": 22,
+      "topic": "Sliding window",
+      "title": "Найти все анаграммы в строке",
+      "description": "Дана строка s и паттерн p. Найти все начальные индексы подстрок в s, которые являются анаграммами p.\n\nПример:\nВход: s = \"cbaebabacd\", p = \"abc\"\nВыход: [0, 6]",
+      "difficulty": "Medium",
+      "solution": "def find_anagrams(s, p):\n    from collections import Counter\n    \n    if len(s) < len(p):\n        return []\n    \n    p_count = Counter(p)\n    window_count = Counter(s[:len(p)])\n    result = []\n    \n    if window_count == p_count:\n        result.append(0)\n    \n    for i in range(len(p), len(s)):\n        window_count[s[i - len(p)]] -= 1\n        if window_count[s[i - len(p)]] == 0:\n            del window_count[s[i - len(p)]]\n        window_count[s[i]] += 1\n        \n        if window_count == p_count:\n            result.append(i - len(p) + 1)\n    \n    return result\n\n# Сложность: O(n) по времени, O(k) по памяти, где k - длина паттерна"
+    },
+    {
+      "id": 23,
+      "topic": "Sliding window",
+      "title": "Длина самой длинной подстроки без повторяющихся символов",
+      "description": "Дана строка. Найти длину самой длинной подстроки без повторяющихся символов.\n\nПример:\nВход: \"abcabcbb\"\nВыход: 3 (подстрока \"abc\")\n\nВход: \"bbbbb\"\nВыход: 1",
+      "difficulty": "Medium",
+      "solution": "def length_of_longest_substring(s):\n    char_map = {}\n    left = 0\n    max_len = 0\n    \n    for right in range(len(s)):\n        if s[right] in char_map and char_map[s[right]] >= left:\n            left = char_map[s[right]] + 1\n        char_map[s[right]] = right\n        max_len = max(max_len, right - left + 1)\n    \n    return max_len\n\n# Сложность: O(n) по времени, O(min(n, k)) по памяти, где k - размер алфавита"
+    },
+    {
+      "id": 24,
+      "topic": "Sliding window",
+      "title": "Минимальный размер подмассива с суммой >= target",
+      "description": "Дан массив положительных целых чисел и целевая сумма target. Найти минимальную длину подмассива, сумма которого >= target.\n\nПример:\nВход: [2, 3, 1, 2, 4, 3], target = 7\nВыход: 2 (подмассив [4, 3])",
+      "difficulty": "Medium",
+      "solution": "def min_subarray_len(nums, target):\n    left = 0\n    current_sum = 0\n    min_len = float('inf')\n    \n    for right in range(len(nums)):\n        current_sum += nums[right]\n        \n        while current_sum >= target:\n            min_len = min(min_len, right - left + 1)\n            current_sum -= nums[left]\n            left += 1\n    \n    return min_len if min_len != float('inf') else 0\n\n# Сложность: O(n) по времени, O(1) по памяти"
+    },
+    {
+      "id": 25,
+      "topic": "Sliding window",
+      "title": "Максимальное среднее значение подмассива",
+      "description": "Дан массив целых чисел и число k. Найти максимальное среднее значение подмассива длины k.\n\nПример:\nВход: [1, 12, -5, -6, 50, 3], k = 4\nВыход: 12.75 (среднее [12, -5, -6, 50])",
+      "difficulty": "Easy",
+      "solution": "def find_max_average(nums, k):\n    if len(nums) < k:\n        return None\n    \n    window_sum = sum(nums[:k])\n    max_sum = window_sum\n    \n    for i in range(k, len(nums)):\n        window_sum = window_sum - nums[i - k] + nums[i]\n        max_sum = max(max_sum, window_sum)\n    \n    return max_sum / k\n\n# Сложность: O(n) по времени, O(1) по памяти"
+    },
+    {
+      "id": 26,
+      "topic": "Sliding window",
+      "title": "Подсчет подстрок с k различными символами",
+      "description": "Дана строка и число k. Найти количество подстрок, содержащих ровно k различных символов.\n\nПример:\nВход: \"abc\", k = 2\nВыход: 2 (\"ab\", \"bc\")",
+      "difficulty": "Medium",
+      "solution": "def count_substrings_with_k_distinct(s, k):\n    def at_most_k_distinct(k_val):\n        char_count = {}\n        left = 0\n        count = 0\n        \n        for right in range(len(s)):\n            char_count[s[right]] = char_count.get(s[right], 0) + 1\n            \n            while len(char_count) > k_val:\n                char_count[s[left]] -= 1\n                if char_count[s[left]] == 0:\n                    del char_count[s[left]]\n                left += 1\n            \n            count += right - left + 1\n        return count\n    \n    return at_most_k_distinct(k) - at_most_k_distinct(k - 1)\n\n# Сложность: O(n) по времени, O(k) по памяти"
+    },
+    {
+      "id": 27,
+      "topic": "Sliding window",
+      "title": "Максимальное количество гласных в подстроке",
+      "description": "Дана строка и число k. Найти максимальное количество гласных букв в подстроке длины k.\n\nПример:\nВход: \"abciiidef\", k = 3\nВыход: 3 (подстрока \"iii\")",
+      "difficulty": "Easy",
+      "solution": "def max_vowels(s, k):\n    vowels = set('aeiou')\n    \n    window_vowels = sum(1 for c in s[:k] if c in vowels)\n    max_vowels_count = window_vowels\n    \n    for i in range(k, len(s)):\n        if s[i - k] in vowels:\n            window_vowels -= 1\n        if s[i] in vowels:\n            window_vowels += 1\n        max_vowels_count = max(max_vowels_count, window_vowels)\n    \n    return max_vowels_count\n\n# Сложность: O(n) по времени, O(1) по памяти"
+    },
+    {
+      "id": 28,
+      "topic": "Sliding window",
+      "title": "Замена символов для получения самой длинной повторяющейся подстроки",
+      "description": "Дана строка s и число k. Можно заменить не более k символов. Найти длину самой длинной подстроки, состоящей из одного символа.\n\nПример:\nВход: \"ABAB\", k = 2\nВыход: 4 (можно заменить оба символа на 'A' или 'B')",
+      "difficulty": "Medium",
+      "solution": "def character_replacement(s, k):\n    char_count = {}\n    left = 0\n    max_len = 0\n    max_freq = 0\n    \n    for right in range(len(s)):\n        char_count[s[right]] = char_count.get(s[right], 0) + 1\n        max_freq = max(max_freq, char_count[s[right]])\n        \n        if (right - left + 1) - max_freq > k:\n            char_count[s[left]] -= 1\n            left += 1\n        \n        max_len = max(max_len, right - left + 1)\n    \n    return max_len\n\n# Сложность: O(n) по времени, O(1) по памяти (ограниченное количество символов)"
+    },
+    {
+      "id": 29,
+      "topic": "Sliding window",
+      "title": "Подсчет подмассивов с суммой в диапазоне",
+      "description": "Дан массив целых чисел и диапазон [lower, upper]. Найти количество подмассивов, сумма которых находится в этом диапазоне.\n\nПример:\nВход: [1, 2, 3], lower = 2, upper = 3\nВыход: 3 ([1, 2], [2], [3])",
+      "difficulty": "Medium",
+      "solution": "def count_subarrays_in_range(nums, lower, upper):\n    def count_at_most(target):\n        count = 0\n        left = 0\n        current_sum = 0\n        \n        for right in range(len(nums)):\n            current_sum += nums[right]\n            while current_sum > target and left <= right:\n                current_sum -= nums[left]\n                left += 1\n            count += right - left + 1\n        return count\n    \n    return count_at_most(upper) - count_at_most(lower - 1)\n\n# Сложность: O(n) по времени, O(1) по памяти"
+    },
+    {
+      "id": 30,
+      "topic": "Sliding window",
+      "title": "Найти все подстроки, содержащие все символы паттерна",
+      "description": "Дана строка s и паттерн p. Найти минимальную подстроку в s, которая содержит все символы из p.\n\nПример:\nВход: s = \"ADOBECODEBANC\", p = \"ABC\"\nВыход: \"BANC\"",
+      "difficulty": "Hard",
+      "solution": "def min_window(s, t):\n    from collections import Counter\n    \n    if not s or not t:\n        return \"\"\n    \n    dict_t = Counter(t)\n    required = len(dict_t)\n    \n    left, right = 0, 0\n    formed = 0\n    window_counts = {}\n    \n    ans = float(\"inf\"), None, None\n    \n    while right < len(s):\n        char = s[right]\n        window_counts[char] = window_counts.get(char, 0) + 1\n        \n        if char in dict_t and window_counts[char] == dict_t[char]:\n            formed += 1\n        \n        while left <= right and formed == required:\n            char = s[left]\n            if right - left + 1 < ans[0]:\n                ans = (right - left + 1, left, right)\n            \n            window_counts[char] -= 1\n            if char in dict_t and window_counts[char] < dict_t[char]:\n                formed -= 1\n            \n            left += 1\n        \n        right += 1\n    \n    return \"\" if ans[0] == float(\"inf\") else s[ans[1]:ans[2] + 1]\n\n# Сложность: O(|s| + |t|) по времени, O(|s| + |t|) по памяти"
+    },
+    {
+      "id": 31,
+      "topic": "Two pointers",
+      "title": "Проверить, является ли строка палиндромом",
+      "description": "Проверить, является ли строка палиндромом, используя two pointers.\n\nПример:\nВход: \"racecar\"\nВыход: True\n\nВход: \"hello\"\nВыход: False",
+      "difficulty": "Easy",
+      "solution": "def is_palindrome(s):\n    left, right = 0, len(s) - 1\n    \n    while left < right:\n        if s[left] != s[right]:\n            return False\n        left += 1\n        right -= 1\n    \n    return True\n\n# Сложность: O(n) по времени, O(1) по памяти"
+    },
+    {
+      "id": 32,
+      "topic": "Two pointers",
+      "title": "Найти два числа с заданной суммой в отсортированном массиве",
+      "description": "Дан отсортированный массив и целевая сумма. Найти два числа, сумма которых равна целевой сумме.\n\nПример:\nВход: [2, 7, 11, 15], target = 9\nВыход: [2, 7] или индексы [0, 1]",
+      "difficulty": "Easy",
+      "solution": "def two_sum_sorted(nums, target):\n    left, right = 0, len(nums) - 1\n    \n    while left < right:\n        current_sum = nums[left] + nums[right]\n        if current_sum == target:\n            return [left, right]\n        elif current_sum < target:\n            left += 1\n        else:\n            right -= 1\n    \n    return []\n\n# Сложность: O(n) по времени, O(1) по памяти"
+    },
+    {
+      "id": 33,
+      "topic": "Two pointers",
+      "title": "Удалить дубликаты из отсортированного массива",
+      "description": "Дан отсортированный массив. Удалить дубликаты на месте, вернув новую длину.\n\nПример:\nВход: [1, 1, 2, 2, 3, 4, 4, 5]\nВыход: 5 (массив становится [1, 2, 3, 4, 5, ...])",
+      "difficulty": "Easy",
+      "solution": "def remove_duplicates(nums):\n    if not nums:\n        return 0\n    \n    write_index = 1\n    for read_index in range(1, len(nums)):\n        if nums[read_index] != nums[read_index - 1]:\n            nums[write_index] = nums[read_index]\n            write_index += 1\n    \n    return write_index\n\n# Сложность: O(n) по времени, O(1) по памяти"
+    },
+    {
+      "id": 34,
+      "topic": "Two pointers",
+      "title": "Переместить нули в конец",
+      "description": "Дан массив. Переместить все нули в конец, сохранив относительный порядок остальных элементов.\n\nПример:\nВход: [0, 1, 0, 3, 12]\nВыход: [1, 3, 12, 0, 0]",
+      "difficulty": "Easy",
+      "solution": "def move_zeros(nums):\n    write_index = 0\n    \n    for read_index in range(len(nums)):\n        if nums[read_index] != 0:\n            nums[write_index] = nums[read_index]\n            write_index += 1\n    \n    while write_index < len(nums):\n        nums[write_index] = 0\n        write_index += 1\n    \n    return nums\n\n# Сложность: O(n) по времени, O(1) по памяти"
+    },
+    {
+      "id": 35,
+      "topic": "Two pointers",
+      "title": "Три числа с суммой равной нулю",
+      "description": "Дан массив целых чисел. Найти все уникальные тройки чисел, сумма которых равна нулю.\n\nПример:\nВход: [-1, 0, 1, 2, -1, -4]\nВыход: [[-1, -1, 2], [-1, 0, 1]]",
+      "difficulty": "Medium",
+      "solution": "def three_sum(nums):\n    nums.sort()\n    result = []\n    \n    for i in range(len(nums) - 2):\n        if i > 0 and nums[i] == nums[i - 1]:\n            continue\n        \n        left, right = i + 1, len(nums) - 1\n        \n        while left < right:\n            current_sum = nums[i] + nums[left] + nums[right]\n            \n            if current_sum == 0:\n                result.append([nums[i], nums[left], nums[right]])\n                \n                while left < right and nums[left] == nums[left + 1]:\n                    left += 1\n                while left < right and nums[right] == nums[right - 1]:\n                    right -= 1\n                \n                left += 1\n                right -= 1\n            elif current_sum < 0:\n                left += 1\n            else:\n                right -= 1\n    \n    return result\n\n# Сложность: O(n²) по времени, O(1) по памяти (без учета результата)"
+    },
+    {
+      "id": 36,
+      "topic": "Two pointers",
+      "title": "Контейнер с наибольшим количеством воды",
+      "description": "Дан массив высот. Найти два индекса, такие что контейнер, образованный этими линиями, содержит наибольшее количество воды.\n\nПример:\nВход: [1, 8, 6, 2, 5, 4, 8, 3, 7]\nВыход: 49 (индексы 1 и 8, площадь = 7 * 7 = 49)",
+      "difficulty": "Medium",
+      "solution": "def max_area(height):\n    left, right = 0, len(height) - 1\n    max_water = 0\n    \n    while left < right:\n        width = right - left\n        current_area = min(height[left], height[right]) * width\n        max_water = max(max_water, current_area)\n        \n        if height[left] < height[right]:\n            left += 1\n        else:\n            right -= 1\n    \n    return max_water\n\n# Сложность: O(n) по времени, O(1) по памяти"
+    },
+    {
+      "id": 37,
+      "topic": "Two pointers",
+      "title": "Объединить два отсортированных массива",
+      "description": "Даны два отсортированных массива. Объединить их в один отсортированный массив.\n\nПример:\nВход: [1, 3, 5], [2, 4, 6]\nВыход: [1, 2, 3, 4, 5, 6]",
+      "difficulty": "Easy",
+      "solution": "def merge_sorted_arrays(arr1, arr2):\n    result = []\n    i, j = 0, 0\n    \n    while i < len(arr1) and j < len(arr2):\n        if arr1[i] <= arr2[j]:\n            result.append(arr1[i])\n            i += 1\n        else:\n            result.append(arr2[j])\n            j += 1\n    \n    result.extend(arr1[i:])\n    result.extend(arr2[j:])\n    \n    return result\n\n# Сложность: O(n + m) по времени, O(n + m) по памяти"
+    },
+    {
+      "id": 38,
+      "topic": "Two pointers",
+      "title": "Проверить, является ли строка подпоследовательностью другой",
+      "description": "Даны две строки s и t. Проверить, является ли s подпоследовательностью t.\n\nПример:\nВход: s = \"ace\", t = \"abcde\"\nВыход: True\n\nВход: s = \"axc\", t = \"ahbgdc\"\nВыход: False",
+      "difficulty": "Easy",
+      "solution": "def is_subsequence(s, t):\n    i, j = 0, 0\n    \n    while i < len(s) and j < len(t):\n        if s[i] == t[j]:\n            i += 1\n        j += 1\n    \n    return i == len(s)\n\n# Сложность: O(n) по времени, где n - длина t, O(1) по памяти"
+    },
+    {
+      "id": 39,
+      "topic": "Two pointers",
+      "title": "Квадраты отсортированного массива",
+      "description": "Дан отсортированный массив целых чисел (может содержать отрицательные). Вернуть массив квадратов элементов в отсортированном порядке.\n\nПример:\nВход: [-4, -1, 0, 3, 10]\nВыход: [0, 1, 9, 16, 100]",
+      "difficulty": "Easy",
+      "solution": "def sorted_squares(nums):\n    n = len(nums)\n    result = [0] * n\n    left, right = 0, n - 1\n    \n    for i in range(n - 1, -1, -1):\n        if abs(nums[left]) > abs(nums[right]):\n            result[i] = nums[left] ** 2\n            left += 1\n        else:\n            result[i] = nums[right] ** 2\n            right -= 1\n    \n    return result\n\n# Сложность: O(n) по времени, O(n) по памяти"
+    },
+    {
+      "id": 40,
+      "topic": "Two pointers",
+      "title": "Найти пару чисел с минимальной разностью",
+      "description": "Даны два отсортированных массива и число target. Найти пару чисел (по одному из каждого массива), сумма которых ближе всего к target.\n\nПример:\nВход: [1, 2, 3], [4, 5, 6], target = 7\nВыход: (1, 6) или (2, 5) или (3, 4)",
+      "difficulty": "Medium",
+      "solution": "def closest_pair(arr1, arr2, target):\n    arr1.sort()\n    arr2.sort()\n    \n    left, right = 0, len(arr2) - 1\n    min_diff = float('inf')\n    result = None\n    \n    while left < len(arr1) and right >= 0:\n        current_sum = arr1[left] + arr2[right]\n        diff = abs(current_sum - target)\n        \n        if diff < min_diff:\n            min_diff = diff\n            result = (arr1[left], arr2[right])\n        \n        if current_sum < target:\n            left += 1\n        else:\n            right -= 1\n    \n    return result\n\n# Сложность: O(n log n + m log m) по времени, O(1) по памяти"
+    },
+    {
+      "id": 41,
+      "topic": "Stack / Queue",
+      "title": "Проверить правильность скобок",
+      "description": "Дана строка, содержащая только символы '(', ')', '{', '}', '[' и ']'. Проверить, правильно ли расставлены скобки.\n\nПример:\nВход: \"()[]{}\"\nВыход: True\n\nВход: \"([)]\"\nВыход: False",
+      "difficulty": "Easy",
+      "solution": "def is_valid_parentheses(s):\n    stack = []\n    mapping = {')': '(', '}': '{', ']': '['}\n    \n    for char in s:\n        if char in mapping:\n            if not stack or stack.pop() != mapping[char]:\n                return False\n        else:\n            stack.append(char)\n    \n    return len(stack) == 0\n\n# Сложность: O(n) по времени, O(n) по памяти"
+    },
+    {
+      "id": 42,
+      "topic": "Stack / Queue",
+      "title": "Очередь с использованием двух стеков",
+      "description": "Реализовать очередь, используя только два стека.\n\nОперации: enqueue, dequeue, peek, empty",
+      "difficulty": "Medium",
+      "solution": "class QueueUsingStacks:\n    def __init__(self):\n        self.stack1 = []\n        self.stack2 = []\n    \n    def enqueue(self, x):\n        self.stack1.append(x)\n    \n    def dequeue(self):\n        if not self.stack2:\n            while self.stack1:\n                self.stack2.append(self.stack1.pop())\n        return self.stack2.pop() if self.stack2 else None\n    \n    def peek(self):\n        if not self.stack2:\n            while self.stack1:\n                self.stack2.append(self.stack1.pop())\n        return self.stack2[-1] if self.stack2 else None\n    \n    def empty(self):\n        return not self.stack1 and not self.stack2\n\n# Сложность: enqueue O(1), dequeue амортизированно O(1)"
+    },
+    {
+      "id": 43,
+      "topic": "Stack / Queue",
+      "title": "Упростить путь к файлу",
+      "description": "Дан абсолютный путь к файлу. Упростить его (убрать '..', '.', лишние слеши).\n\nПример:\nВход: \"/home//foo/\"\nВыход: \"/home/foo\"\n\nВход: \"/a/./b/../../c/\"\nВыход: \"/c\"",
+      "difficulty": "Medium",
+      "solution": "def simplify_path(path):\n    stack = []\n    parts = path.split('/')\n    \n    for part in parts:\n        if part == '..':\n            if stack:\n                stack.pop()\n        elif part and part != '.':\n            stack.append(part)\n    \n    return '/' + '/'.join(stack)\n\n# Сложность: O(n) по времени, O(n) по памяти"
+    },
+    {
+      "id": 44,
+      "topic": "Stack / Queue",
+      "title": "Обратная польская нотация (RPN)",
+      "description": "Вычислить выражение в обратной польской нотации.\n\nПример:\nВход: [\"2\", \"1\", \"+\", \"3\", \"*\"]\nВыход: 9 (эквивалентно ((2 + 1) * 3))",
+      "difficulty": "Medium",
+      "solution": "def eval_rpn(tokens):\n    stack = []\n    \n    for token in tokens:\n        if token in '+-*/':\n            b = stack.pop()\n            a = stack.pop()\n            \n            if token == '+':\n                stack.append(a + b)\n            elif token == '-':\n                stack.append(a - b)\n            elif token == '*':\n                stack.append(a * b)\n            elif token == '/':\n                stack.append(int(a / b))\n        else:\n            stack.append(int(token))\n    \n    return stack[0]\n\n# Сложность: O(n) по времени, O(n) по памяти"
+    },
+    {
+      "id": 45,
+      "topic": "Stack / Queue",
+      "title": "Следующий больший элемент",
+      "description": "Дан массив. Для каждого элемента найти следующий больший элемент справа. Если такого нет, вернуть -1.\n\nПример:\nВход: [4, 5, 2, 25]\nВыход: [5, 25, 25, -1]",
+      "difficulty": "Medium",
+      "solution": "def next_greater_element(nums):\n    stack = []\n    result = [-1] * len(nums)\n    \n    for i in range(len(nums)):\n        while stack and nums[stack[-1]] < nums[i]:\n            result[stack.pop()] = nums[i]\n        stack.append(i)\n    \n    return result\n\n# Сложность: O(n) по времени, O(n) по памяти"
+    },
+    {
+      "id": 46,
+      "topic": "Stack / Queue",
+      "title": "Минимальный стек",
+      "description": "Реализовать стек с поддержкой операции получения минимального элемента за O(1).\n\nОперации: push, pop, top, getMin",
+      "difficulty": "Medium",
+      "solution": "class MinStack:\n    def __init__(self):\n        self.stack = []\n        self.min_stack = []\n    \n    def push(self, val):\n        self.stack.append(val)\n        if not self.min_stack or val <= self.min_stack[-1]:\n            self.min_stack.append(val)\n    \n    def pop(self):\n        if self.stack:\n            val = self.stack.pop()\n            if val == self.min_stack[-1]:\n                self.min_stack.pop()\n            return val\n        return None\n    \n    def top(self):\n        return self.stack[-1] if self.stack else None\n    \n    def getMin(self):\n        return self.min_stack[-1] if self.min_stack else None\n\n# Все операции O(1)"
+    },
+    {
+      "id": 47,
+      "topic": "Stack / Queue",
+      "title": "Очередь с приоритетом (базовая реализация)",
+      "description": "Реализовать очередь с приоритетом, где элементы с меньшим значением имеют больший приоритет.\n\nОперации: push, pop (удаляет минимальный), peek",
+      "difficulty": "Medium",
+      "solution": "import heapq\n\nclass PriorityQueue:\n    def __init__(self):\n        self.heap = []\n    \n    def push(self, item):\n        heapq.heappush(self.heap, item)\n    \n    def pop(self):\n        return heapq.heappop(self.heap) if self.heap else None\n    \n    def peek(self):\n        return self.heap[0] if self.heap else None\n    \n    def empty(self):\n        return len(self.heap) == 0\n\n# push и pop: O(log n), peek: O(1)"
+    },
+    {
+      "id": 48,
+      "topic": "Stack / Queue",
+      "title": "Удалить соседние дубликаты",
+      "description": "Дана строка. Удалить все соседние дубликаты символов.\n\nПример:\nВход: \"abbaca\"\nВыход: \"ca\" (удаляем \"bb\", затем \"aa\")",
+      "difficulty": "Easy",
+      "solution": "def remove_adjacent_duplicates(s):\n    stack = []\n    \n    for char in s:\n        if stack and stack[-1] == char:\n            stack.pop()\n        else:\n            stack.append(char)\n    \n    return ''.join(stack)\n\n# Сложность: O(n) по времени, O(n) по памяти"
+    },
+    {
+      "id": 49,
+      "topic": "Stack / Queue",
+      "title": "Максимальная площадь в гистограмме",
+      "description": "Дан массив высот столбцов гистограммы. Найти максимальную площадь прямоугольника, который можно вписать в гистограмму.\n\nПример:\nВход: [2, 1, 5, 6, 2, 3]\nВыход: 10",
+      "difficulty": "Hard",
+      "solution": "def largest_rectangle_area(heights):\n    stack = []\n    max_area = 0\n    \n    for i, height in enumerate(heights):\n        while stack and heights[stack[-1]] > height:\n            h = heights[stack.pop()]\n            w = i if not stack else i - stack[-1] - 1\n            max_area = max(max_area, h * w)\n        stack.append(i)\n    \n    while stack:\n        h = heights[stack.pop()]\n        w = len(heights) if not stack else len(heights) - stack[-1] - 1\n        max_area = max(max_area, h * w)\n    \n    return max_area\n\n# Сложность: O(n) по времени, O(n) по памяти"
+    },
+    {
+      "id": 50,
+      "topic": "Stack / Queue",
+      "title": "Очередь с максимумом",
+      "description": "Реализовать очередь с поддержкой операции получения максимального элемента за O(1) амортизированно.\n\nОперации: enqueue, dequeue, getMax",
+      "difficulty": "Hard",
+      "solution": "from collections import deque\n\nclass MaxQueue:\n    def __init__(self):\n        self.queue = deque()\n        self.max_deque = deque()\n    \n    def enqueue(self, val):\n        self.queue.append(val)\n        while self.max_deque and self.max_deque[-1] < val:\n            self.max_deque.pop()\n        self.max_deque.append(val)\n    \n    def dequeue(self):\n        if not self.queue:\n            return None\n        val = self.queue.popleft()\n        if val == self.max_deque[0]:\n            self.max_deque.popleft()\n        return val\n    \n    def getMax(self):\n        return self.max_deque[0] if self.max_deque else None\n\n# Все операции амортизированно O(1)"
+    },
+    {
+      "id": 51,
+      "topic": "Сортировка + проход",
+      "title": "Найти k-й наибольший элемент",
+      "description": "Дан массив и число k. Найти k-й наибольший элемент.\n\nПример:\nВход: [3, 2, 1, 5, 6, 4], k = 2\nВыход: 5",
+      "difficulty": "Medium",
+      "solution": "def find_kth_largest(nums, k):\n    nums.sort(reverse=True)\n    return nums[k - 1]\n\n# Или без полной сортировки (быстрее для больших массивов):\n# import heapq\n# return heapq.nlargest(k, nums)[-1]\n# Сложность: O(n log n) по времени, O(1) по памяти"
+    },
+    {
+      "id": 52,
+      "topic": "Сортировка + проход",
+      "title": "Объединить интервалы",
+      "description": "Дан массив интервалов [start, end]. Объединить перекрывающиеся интервалы.\n\nПример:\nВход: [[1, 3], [2, 6], [8, 10], [15, 18]]\nВыход: [[1, 6], [8, 10], [15, 18]]",
+      "difficulty": "Medium",
+      "solution": "def merge_intervals(intervals):\n    if not intervals:\n        return []\n    \n    intervals.sort(key=lambda x: x[0])\n    merged = [intervals[0]]\n    \n    for current in intervals[1:]:\n        last = merged[-1]\n        if current[0] <= last[1]:\n            last[1] = max(last[1], current[1])\n        else:\n            merged.append(current)\n    \n    return merged\n\n# Сложность: O(n log n) по времени, O(n) по памяти"
+    },
+    {
+      "id": 53,
+      "topic": "Сортировка + проход",
+      "title": "Найти пропущенное число",
+      "description": "Дан массив из n чисел в диапазоне [0, n]. Найти пропущенное число.\n\nПример:\nВход: [3, 0, 1]\nВыход: 2",
+      "difficulty": "Easy",
+      "solution": "def missing_number(nums):\n    n = len(nums)\n    expected_sum = n * (n + 1) // 2\n    actual_sum = sum(nums)\n    return expected_sum - actual_sum\n\n# Или с сортировкой:\n# nums.sort()\n# for i, num in enumerate(nums):\n#     if i != num:\n#         return i\n# return len(nums)\n# Сложность: O(n) по времени, O(1) по памяти"
+    },
+    {
+      "id": 54,
+      "topic": "Сортировка + проход",
+      "title": "Найти все дубликаты в массиве",
+      "description": "Дан массив целых чисел, где каждое число встречается от 1 до n раз. Найти все числа, которые встречаются ровно дважды.\n\nПример:\nВход: [4, 3, 2, 7, 8, 2, 3, 1]\nВыход: [2, 3]",
+      "difficulty": "Medium",
+      "solution": "def find_duplicates(nums):\n    result = []\n    \n    for num in nums:\n        index = abs(num) - 1\n        if nums[index] < 0:\n            result.append(abs(num))\n        else:\n            nums[index] = -nums[index]\n    \n    return result\n\n# Или с сортировкой:\n# nums.sort()\n# result = []\n# for i in range(1, len(nums)):\n#     if nums[i] == nums[i-1]:\n#         result.append(nums[i])\n# return result\n# Сложность: O(n) по времени, O(1) по памяти (без учета результата)"
+    },
+    {
+      "id": 55,
+      "topic": "Сортировка + проход",
+      "title": "Сортировать массив по частоте",
+      "description": "Дан массив. Отсортировать его по частоте элементов (от наиболее частых к наименее частым). При одинаковой частоте сохранить исходный порядок.\n\nПример:\nВход: [2, 3, 1, 3, 2]\nВыход: [3, 3, 2, 2, 1] или [2, 2, 3, 3, 1]",
+      "difficulty": "Medium",
+      "solution": "def sort_by_frequency(arr):\n    from collections import Counter\n    \n    counter = Counter(arr)\n    return sorted(arr, key=lambda x: (-counter[x], arr.index(x)))\n\n# Или:\n# freq = Counter(arr)\n# return sorted(arr, key=lambda x: (-freq[x], x))\n# Сложность: O(n log n) по времени, O(n) по памяти"
+    },
+    {
+      "id": 56,
+      "topic": "Сортировка + проход",
+      "title": "Найти пересечение двух отсортированных массивов",
+      "description": "Даны два отсортированных массива. Найти их пересечение (элементы, присутствующие в обоих).\n\nПример:\nВход: [1, 2, 2, 1], [2, 2]\nВыход: [2, 2]",
+      "difficulty": "Easy",
+      "solution": "def intersect_sorted(nums1, nums2):\n    nums1.sort()\n    nums2.sort()\n    \n    i, j = 0, 0\n    result = []\n    \n    while i < len(nums1) and j < len(nums2):\n        if nums1[i] == nums2[j]:\n            result.append(nums1[i])\n            i += 1\n            j += 1\n        elif nums1[i] < nums2[j]:\n            i += 1\n        else:\n            j += 1\n    \n    return result\n\n# Сложность: O(n log n + m log m) по времени, O(min(n, m)) по памяти"
+    },
+    {
+      "id": 57,
+      "topic": "Сортировка + проход",
+      "title": "Проверить, можно ли разделить массив на пары с равной суммой",
+      "description": "Дан массив четной длины. Проверить, можно ли разделить его на пары с равной суммой.\n\nПример:\nВход: [1, 5, 11, 5]\nВыход: True (можно разделить на [1, 5] и [11, 5], но сумма не равна)\n\nПравильный пример:\nВход: [3, 1, 3, 1]\nВыход: True",
+      "difficulty": "Medium",
+      "solution": "def can_partition_pairs(nums):\n    from collections import Counter\n    \n    if len(nums) % 2 != 0:\n        return False\n    \n    freq = Counter(nums)\n    \n    for num, count in freq.items():\n        if count % 2 != 0:\n            return False\n    \n    return True\n\n# Сложность: O(n) по времени, O(n) по памяти"
+    },
+    {
+      "id": 58,
+      "topic": "Сортировка + проход",
+      "title": "Найти максимальный продукт трех чисел",
+      "description": "Дан массив целых чисел. Найти максимальный продукт трех чисел.\n\nПример:\nВход: [1, 2, 3, 4]\nВыход: 24 (2 * 3 * 4)\n\nВход: [-1, -2, -3, 4]\nВыход: 24 (-2 * -3 * 4)",
+      "difficulty": "Medium",
+      "solution": "def maximum_product(nums):\n    nums.sort()\n    n = len(nums)\n    \n    # Максимум из: три наибольших или два наименьших (отрицательных) и наибольшее\n    return max(\n        nums[n-1] * nums[n-2] * nums[n-3],\n        nums[0] * nums[1] * nums[n-1]\n    )\n\n# Сложность: O(n log n) по времени, O(1) по памяти"
+    },
+    {
+      "id": 59,
+      "topic": "Сортировка + проход",
+      "title": "Найти все числа, исчезнувшие из массива",
+      "description": "Дан массив из n чисел, где каждое число в диапазоне [1, n]. Некоторые числа могут отсутствовать. Найти все отсутствующие числа.\n\nПример:\nВход: [4, 3, 2, 7, 8, 2, 3, 1]\nВыход: [5, 6]",
+      "difficulty": "Easy",
+      "solution": "def find_disappeared_numbers(nums):\n    n = len(nums)\n    present = set(nums)\n    return [i for i in range(1, n + 1) if i not in present]\n\n# Или без дополнительной памяти:\n# for num in nums:\n#     index = abs(num) - 1\n#     if nums[index] > 0:\n#         nums[index] = -nums[index]\n# return [i + 1 for i in range(len(nums)) if nums[i] > 0]\n# Сложность: O(n) по времени, O(n) по памяти"
+    },
+    {
+      "id": 60,
+      "topic": "Сортировка + проход",
+      "title": "Сортировать массив по четности",
+      "description": "Дан массив целых чисел. Отсортировать так, чтобы все четные числа были в начале, а нечетные в конце.\n\nПример:\nВход: [3, 1, 2, 4]\nВыход: [2, 4, 3, 1] (или любая перестановка с четными в начале)",
+      "difficulty": "Easy",
+      "solution": "def sort_by_parity(nums):\n    return sorted(nums, key=lambda x: x % 2)\n\n# Или с two pointers (in-place):\n# left = 0\n# for right in range(len(nums)):\n#     if nums[right] % 2 == 0:\n#         nums[left], nums[right] = nums[right], nums[left]\n#         left += 1\n# return nums\n# Сложность: O(n log n) по времени, O(1) по памяти (in-place версия O(n))"
+    },
+    {
+      "id": 61,
+      "topic": "BFS (базово, без изысков)",
+      "title": "Обход дерева по уровням",
+      "description": "Дан корень бинарного дерева. Вернуть значения узлов, обходя дерево по уровням (слева направо).\n\nПример:\nВход: дерево с корнем 3, левый потомок 9, правый потомок 20 (с потомками 15, 7)\nВыход: [[3], [9, 20], [15, 7]]",
+      "difficulty": "Medium",
+      "solution": "from collections import deque\n\ndef level_order(root):\n    if not root:\n        return []\n    \n    result = []\n    queue = deque([root])\n    \n    while queue:\n        level_size = len(queue)\n        level = []\n        \n        for _ in range(level_size):\n            node = queue.popleft()\n            level.append(node.val)\n            \n            if node.left:\n                queue.append(node.left)\n            if node.right:\n                queue.append(node.right)\n        \n        result.append(level)\n    \n    return result\n\n# Сложность: O(n) по времени, O(n) по памяти"
+    },
+    {
+      "id": 62,
+      "topic": "BFS (базово, без изысков)",
+      "title": "Минимальная глубина бинарного дерева",
+      "description": "Дан корень бинарного дерева. Найти минимальную глубину (расстояние от корня до ближайшего листа).\n\nПример:\nВход: дерево с корнем 3, потомками 9 и 20 (20 имеет потомков 15, 7)\nВыход: 2 (путь 3 -> 9)",
+      "difficulty": "Easy",
+      "solution": "from collections import deque\n\ndef min_depth(root):\n    if not root:\n        return 0\n    \n    queue = deque([(root, 1)])\n    \n    while queue:\n        node, depth = queue.popleft()\n        \n        if not node.left and not node.right:\n            return depth\n        \n        if node.left:\n            queue.append((node.left, depth + 1))\n        if node.right:\n            queue.append((node.right, depth + 1))\n    \n    return 0\n\n# Сложность: O(n) по времени, O(n) по памяти"
+    },
+    {
+      "id": 63,
+      "topic": "BFS (базово, без изысков)",
+      "title": "Симметричное дерево",
+      "description": "Проверить, является ли бинарное дерево симметричным (зеркальным отражением самого себя).\n\nПример:\nВход: дерево [1, 2, 2, 3, 4, 4, 3]\nВыход: True",
+      "difficulty": "Easy",
+      "solution": "from collections import deque\n\ndef is_symmetric(root):\n    if not root:\n        return True\n    \n    queue = deque([(root.left, root.right)])\n    \n    while queue:\n        left, right = queue.popleft()\n        \n        if not left and not right:\n            continue\n        if not left or not right:\n            return False\n        if left.val != right.val:\n            return False\n        \n        queue.append((left.left, right.right))\n        queue.append((left.right, right.left))\n    \n    return True\n\n# Сложность: O(n) по времени, O(n) по памяти"
+    },
+    {
+      "id": 64,
+      "topic": "BFS (базово, без изысков)",
+      "title": "Найти все узлы на уровне k",
+      "description": "Дан корень бинарного дерева и число k. Найти все значения узлов на уровне k (0 - корень).\n\nПример:\nВход: дерево с корнем 1, потомками 2 и 3, k = 1\nВыход: [2, 3]",
+      "difficulty": "Easy",
+      "solution": "from collections import deque\n\ndef nodes_at_level(root, k):\n    if not root:\n        return []\n    \n    queue = deque([(root, 0)])\n    result = []\n    \n    while queue:\n        node, level = queue.popleft()\n        \n        if level == k:\n            result.append(node.val)\n        elif level < k:\n            if node.left:\n                queue.append((node.left, level + 1))\n            if node.right:\n                queue.append((node.right, level + 1))\n    \n    return result\n\n# Сложность: O(n) по времени, O(n) по памяти"
+    },
+    {
+      "id": 65,
+      "topic": "BFS (базово, без изысков)",
+      "title": "Проверить, является ли граф двудольным",
+      "description": "Дан неориентированный граф. Проверить, является ли он двудольным (можно раскрасить вершины в два цвета так, что смежные вершины имеют разные цвета).\n\nПример:\nВход: граф [[1, 3], [0, 2], [1, 3], [0, 2]]\nВыход: True",
+      "difficulty": "Medium",
+      "solution": "from collections import deque\n\ndef is_bipartite(graph):\n    n = len(graph)\n    color = {}\n    \n    for start in range(n):\n        if start in color:\n            continue\n        \n        queue = deque([start])\n        color[start] = 0\n        \n        while queue:\n            node = queue.popleft()\n            \n            for neighbor in graph[node]:\n                if neighbor not in color:\n                    color[neighbor] = 1 - color[node]\n                    queue.append(neighbor)\n                elif color[neighbor] == color[node]:\n                    return False\n    \n    return True\n\n# Сложность: O(V + E) по времени, O(V) по памяти"
+    },
+    {
+      "id": 66,
+      "topic": "BFS (базово, без изысков)",
+      "title": "Кратчайший путь в невзвешенном графе",
+      "description": "Дан неориентированный невзвешенный граф и две вершины. Найти длину кратчайшего пути между ними.\n\nПример:\nВход: граф [[1, 2], [0, 3], [0, 3], [1, 2]], start = 0, end = 3\nВыход: 2",
+      "difficulty": "Medium",
+      "solution": "from collections import deque\n\ndef shortest_path(graph, start, end):\n    if start == end:\n        return 0\n    \n    queue = deque([(start, 0)])\n    visited = {start}\n    \n    while queue:\n        node, distance = queue.popleft()\n        \n        for neighbor in graph[node]:\n            if neighbor == end:\n                return distance + 1\n            \n            if neighbor not in visited:\n                visited.add(neighbor)\n                queue.append((neighbor, distance + 1))\n    \n    return -1  # Путь не найден\n\n# Сложность: O(V + E) по времени, O(V) по памяти"
+    },
+    {
+      "id": 67,
+      "topic": "BFS (базово, без изысков)",
+      "title": "Найти все пути от корня к листьям",
+      "description": "Дан корень бинарного дерева. Найти все пути от корня к листьям.\n\nПример:\nВход: дерево с корнем 1, потомками 2 и 3\nВыход: [[1, 2], [1, 3]]",
+      "difficulty": "Medium",
+      "solution": "from collections import deque\n\ndef all_paths_to_leaves(root):\n    if not root:\n        return []\n    \n    result = []\n    queue = deque([(root, [root.val])])\n    \n    while queue:\n        node, path = queue.popleft()\n        \n        if not node.left and not node.right:\n            result.append(path)\n        else:\n            if node.left:\n                queue.append((node.left, path + [node.left.val]))\n            if node.right:\n                queue.append((node.right, path + [node.right.val]))\n    \n    return result\n\n# Сложность: O(n) по времени, O(n) по памяти"
+    },
+    {
+      "id": 68,
+      "topic": "BFS (базово, без изысков)",
+      "title": "Максимальная ширина бинарного дерева",
+      "description": "Дан корень бинарного дерева. Найти максимальную ширину дерева (максимальное количество узлов на одном уровне).\n\nПример:\nВход: дерево [1, 3, 2, 5, 3, null, 9]\nВыход: 4 (на уровне [5, 3, null, 9])",
+      "difficulty": "Medium",
+      "solution": "from collections import deque\n\ndef max_width(root):\n    if not root:\n        return 0\n    \n    max_width_val = 0\n    queue = deque([(root, 0)])\n    \n    while queue:\n        level_size = len(queue)\n        max_width_val = max(max_width_val, level_size)\n        \n        for _ in range(level_size):\n            node, pos = queue.popleft()\n            \n            if node.left:\n                queue.append((node.left, 2 * pos))\n            if node.right:\n                queue.append((node.right, 2 * pos + 1))\n    \n    return max_width_val\n\n# Сложность: O(n) по времени, O(n) по памяти"
+    },
+    {
+      "id": 69,
+      "topic": "BFS (базово, без изысков)",
+      "title": "Проверить полноту бинарного дерева",
+      "description": "Проверить, является ли бинарное дерево полным (все уровни заполнены, кроме последнего, который заполнен слева направо).\n\nПример:\nВход: дерево [1, 2, 3, 4, 5, 6]\nВыход: True",
+      "difficulty": "Medium",
+      "solution": "from collections import deque\n\ndef is_complete_tree(root):\n    if not root:\n        return True\n    \n    queue = deque([root])\n    found_null = False\n    \n    while queue:\n        node = queue.popleft()\n        \n        if node is None:\n            found_null = True\n        else:\n            if found_null:\n                return False\n            queue.append(node.left)\n            queue.append(node.right)\n    \n    return True\n\n# Сложность: O(n) по времени, O(n) по памяти"
+    },
+    {
+      "id": 70,
+      "topic": "BFS (базово, без изысков)",
+      "title": "Найти среднее значение на каждом уровне",
+      "description": "Дан корень бинарного дерева. Найти среднее значение узлов на каждом уровне.\n\nПример:\nВход: дерево с корнем 3, потомками 9 и 20 (20 имеет потомков 15, 7)\nВыход: [3.0, 14.5, 11.0]",
+      "difficulty": "Easy",
+      "solution": "from collections import deque\n\ndef average_of_levels(root):\n    if not root:\n        return []\n    \n    result = []\n    queue = deque([root])\n    \n    while queue:\n        level_size = len(queue)\n        level_sum = 0\n        \n        for _ in range(level_size):\n            node = queue.popleft()\n            level_sum += node.val\n            \n            if node.left:\n                queue.append(node.left)\n            if node.right:\n                queue.append(node.right)\n        \n        result.append(level_sum / level_size)\n    \n    return result\n\n# Сложность: O(n) по времени, O(n) по памяти"
+    }
+  ]
+}
