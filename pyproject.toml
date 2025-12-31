@@ -9,6 +9,7 @@ packages = [{include = "algo_test"}]
 [tool.poetry.dependencies]
 python = "^3.10"
 jupyterlab = "^4.5.1"
+httpx = "^0.28.1"
 
 
 [build-system]
